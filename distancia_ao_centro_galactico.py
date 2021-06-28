@@ -148,7 +148,7 @@ hist_grupo1x = fazer_histograma(filtro_grupo1['dx'], -100, 100,
 #histograma com gaussiana grupo 1 dx
 histgaus_grupo1x = fazer_gaussiana(filtro_grupo1['dx'], -100, 100,
                                 'Histograma grupo1', 'dx', 'gaus_grupo1_dx.png')
-print('O valor de r_o para o grupo 1 é {0:.2f} kpc.'.format(histgaus_grupo1x))
+print('O valor de Ro a partir do ajuste da gaussiana para o grupo 1 é {0:.2f} kpc.'.format(histgaus_grupo1x))
 
 #histograma grupo 1 dy
 hist_grupo1y = fazer_histograma(filtro_grupo1['dy'], -100, 100,
@@ -173,7 +173,7 @@ hist_grupo2x = fazer_histograma(filtro_grupo2['dx'], -100, 100,
 #histograma com gaussiana grupo 2 dx
 histgaus_grupo2x = fazer_gaussiana(filtro_grupo2['dx'], -100, 100,
                                 'Histograma grupo2', 'dx', 'gaus_grupo2_dx.png')
-print('O valor de r_o para o grupo 2 é {0:.2f} kpc.'.format(histgaus_grupo2x))
+print('O valor de Ro a partir do ajuste da gaussiana para o grupo 2 é {0:.2f} kpc.'.format(histgaus_grupo2x))
 
 1/(np.pi*2)**2
 
@@ -201,7 +201,7 @@ hist_grupo3x = fazer_histograma(filtro_grupo3['dx'], -30, 30,
 #histograma com gaussiana grupo 3 dx
 histgaus_grupo3x = fazer_gaussiana(filtro_grupo3['dx'], -30, 30,
                                 'Histograma grupo3', 'dx', 'gaus_grupo3_dx.png')
-print('O valor de r_o para o grupo 3 é {0:.2f} kpc.'.format(histgaus_grupo3x))
+print('O valor de Ro a partir do ajuste da gaussiana para o grupo 3 é {0:.2f} kpc.'.format(histgaus_grupo3x))
 
 #histograma grupo 3 dy
 hist_grupo3y = fazer_histograma(filtro_grupo3['dy'], -30, 30,
