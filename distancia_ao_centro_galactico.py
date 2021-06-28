@@ -83,9 +83,9 @@ ro1z = filtro_grupo1['dz'].mean()
 
 #Estimamos a a distância do Sol ao CG com a equação 7.
 ro1 = (ro1x**2 + ro1y**2 + ro1z**2)**(1/2)
-print('A componente x é {0:.2f}.\n'.format(ro1x),
-      'A componente y é {0:.2f}.\n'.format(ro1y),
-      'A componente z é {0:.2f}.\n'.format(ro1z),
+print('A componente x é {0:.2f} kpc.\n'.format(ro1x),
+      'A componente y é {0:.2f} kpc.\n'.format(ro1y),
+      'A componente z é {0:.2f} kpc.\n'.format(ro1z),
     'A distância do Sol ao CG é {0:.2f} kpc.'.format(ro1))
 
 #Aplicamos as equações 4, 5 e 6 do roteiro de atividades para determinar
@@ -139,12 +139,16 @@ def fazer_gaussiana(eixox, min, max, titulo, nomeeixox, nomegrafico):
 #Fizemos um histograma para cada direção de cada grupo e também um histograma
 #com aplicação de uma gaussiana.
 
+#Fizemos um histograma para cada direção de cada grupo e também um histograma
+#com aplicação de uma gaussiana.
+
 hist_grupo1x = fazer_histograma(filtro_grupo1['dx'], -100, 100,
                                 'Histograma grupo1', 'dx', 'hist_grupo1_dx.png')
 
 #histograma com gaussiana grupo 1 dx
 histgaus_grupo1x = fazer_gaussiana(filtro_grupo1['dx'], -100, 100,
                                 'Histograma grupo1', 'dx', 'gaus_grupo1_dx.png')
+print('O valor de r_o para o grupo 1 é {0:.2f} kpc.'.format(histgaus_grupo1x))
 
 #histograma grupo 1 dy
 hist_grupo1y = fazer_histograma(filtro_grupo1['dy'], -100, 100,
@@ -169,6 +173,9 @@ hist_grupo2x = fazer_histograma(filtro_grupo2['dx'], -100, 100,
 #histograma com gaussiana grupo 2 dx
 histgaus_grupo2x = fazer_gaussiana(filtro_grupo2['dx'], -100, 100,
                                 'Histograma grupo2', 'dx', 'gaus_grupo2_dx.png')
+print('O valor de r_o para o grupo 2 é {0:.2f} kpc.'.format(histgaus_grupo2x))
+
+1/(np.pi*2)**2
 
 #histograma grupo 2 dy
 hist_grupo2y = fazer_histograma(filtro_grupo2['dy'], -100, 100,
@@ -194,6 +201,7 @@ hist_grupo3x = fazer_histograma(filtro_grupo3['dx'], -30, 30,
 #histograma com gaussiana grupo 3 dx
 histgaus_grupo3x = fazer_gaussiana(filtro_grupo3['dx'], -30, 30,
                                 'Histograma grupo3', 'dx', 'gaus_grupo3_dx.png')
+print('O valor de r_o para o grupo 3 é {0:.2f} kpc.'.format(histgaus_grupo3x))
 
 #histograma grupo 3 dy
 hist_grupo3y = fazer_histograma(filtro_grupo3['dy'], -30, 30,
