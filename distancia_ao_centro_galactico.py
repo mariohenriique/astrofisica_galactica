@@ -1,14 +1,24 @@
 import pandas as pd
 import numpy as np
-import math as math
+import math
 import matplotlib.pyplot as plt
 import os
 import statistics as estat
 from scipy.stats import norm
+from tkinter import filedialog
 
-os.makedirs('histograma')
-os.makedirs('histograma_gaussiana')
-os.makedirs('metalicidade')
+def diretorio():
+  diretorio = filedialog.askdirectory(title='Selecione a pasta onde será salvo os gráficos')
+
+  if not os.path.exists(os.path.join(diretorio,'histograma')):
+    os.makedirs('histograma')
+  if not os.path.exists(os.path.join(diretorio,'histograma_gaussiana')):
+    os.makedirs('histograma_gaussiana')
+  if not os.path.exists(os.path.join(diretorio,'metalicidade')):
+    os.makedirs('metalicidade')
+  if not os.path.exists(os.path.join(diretorio,'grafico_grupo')):
+    os.makedirs('grafico_grupo')
+  return diretorio
 
 def leitura(nomearquivo):
   arquivo = pd.read_csv(nomearquivo)
@@ -19,13 +29,43 @@ def leitura(nomearquivo):
 
   return df_test
 
+def fazer_grafico(x,y,titulo,nomeeixox,nomeeixoy,nome):
+  plt.scatter(x,y) #plotar o gráfico 
+  plt.title (titulo) #título
+  plt.xlabel(nomeeixox) #título do eixo x
+  plt.ylabel(nomeeixoy) #título do eixo y
+  plt.savefig(os.path.join(graficos_path,'grafico_grupo',nome),format='png')
+  plt.show()
+
+def fazer_histograma(eixox, min, max, titulo, nomeeixox, nomegrafico):
+  plt.figure()
+  plt.hist(eixox, bins=range(min,max,2))
+  plt.title(titulo)
+  plt.xlabel(nomeeixox)
+  plt.ylabel('Aglomerados')
+  plt.savefig(os.path.join(graficos_path,'histograma',nomegrafico))
+
+def fazer_gaussiana(eixox, min, max, titulo, nomeeixox, nomegrafico):
+  plt.figure()
+  plt.hist(eixox, bins=range(min,max,2), density = True)
+  plt.title(titulo)
+  plt.xlabel(nomeeixox)
+  plt.ylabel('Aglomerados')
+  media = estat.mean(eixox)
+  desvio = estat.pstdev(eixox)
+  xmim, xmax = plt.xlim()
+  eixo = np.linspace(xmim,xmax,1000)
+  eixoy = norm.pdf(eixo,media,desvio)
+  plt.plot(eixo,eixoy)
+  plt.savefig(os.path.join(graficos_path,'histograma_gaussiana',nomegrafico))
+
 #Primeiramente vamos fazer 3 gráficos latitude galáctica x metalicidade;
 #Os grupos serão classificados da seguinte forma:
 #grupo 1: todos os aglomerados
 #grupo 2: aglomerados com metalicidade menor ou igual a -1,2 
 #grupo 3: aglomerados com metalicidade maior que -1,2
 
-planilha1 = leitura('Todos_os_valores.csv')
+planilha1 = leitura(filedialog.askopenfile())
 
 #aplicamos a equação 1; 2 e 3 e adicionamos os valores encontrados ao Dataframe
 rad = np.pi/180
@@ -39,13 +79,7 @@ filtro_grupo1 = planilha1
 filtro_grupo2 = planilha1[planilha1['[Fe/H]'] <= -1.2]
 filtro_grupo3 = planilha1[planilha1['[Fe/H]'] > -1.2]
 
-def fazer_grafico(x,y,titulo,nomeeixox,nomeeixoy,nome):
-  plt.scatter(x,y) #plotar o gráfico 
-  plt.title (titulo) #título
-  plt.xlabel(nomeeixox) #título do eixo x
-  plt.ylabel(nomeeixoy) #título do eixo y
-  plt.savefig(nome,format='png')
-  plt.show()
+graficos_path = diretorio()
 
 #fazer o gráfico
 
@@ -116,26 +150,6 @@ print('A componente x é {0:.2f} kpc.\n'.format(ro3x),
       'A componente z é {0:.2f} kpc.\n'.format(ro3z),
     'A distância do Sol ao CG é {0:.2f} kpc.'.format(ro3))
 
-def fazer_histograma(eixox, min, max, titulo, nomeeixox, nomegrafico):
-  plt.hist(eixox, bins=range(min,max,2))
-  plt.title(titulo)
-  plt.xlabel(nomeeixox)
-  plt.ylabel('Aglomerados')
-  plt.savefig('histograma/'+nomegrafico)
-
-def fazer_gaussiana(eixox, min, max, titulo, nomeeixox, nomegrafico):
-  plt.hist(eixox, bins=range(min,max,2), density = True)
-  plt.title(titulo)
-  plt.xlabel(nomeeixox)
-  plt.ylabel('Aglomerados')
-  media = estat.mean(eixox)
-  desvio = estat.pstdev(eixox)
-  xmim, xmax = plt.xlim()
-  eixo = np.linspace(xmim,xmax,1000)
-  eixoy = norm.pdf(eixo,media,desvio)
-  plt.plot(eixo,eixoy)
-  plt.savefig('histograma_gaussiana/'+nomegrafico)
-
 #Fizemos um histograma para cada direção de cada grupo e também um histograma
 #com aplicação de uma gaussiana.
 
@@ -148,7 +162,7 @@ hist_grupo1x = fazer_histograma(filtro_grupo1['dx'], -100, 100,
 #histograma com gaussiana grupo 1 dx
 histgaus_grupo1x = fazer_gaussiana(filtro_grupo1['dx'], -100, 100,
                                 'Histograma grupo1', 'dx', 'gaus_grupo1_dx.png')
-print('O valor de Ro a partir do ajuste da gaussiana para o grupo 1 é {0:.2f} kpc.'.format(histgaus_grupo1x))
+# print('O valor de Ro a partir do ajuste da gaussiana para o grupo 1 é {0:.2f} kpc.'.format(histgaus_grupo1x))
 
 #histograma grupo 1 dy
 hist_grupo1y = fazer_histograma(filtro_grupo1['dy'], -100, 100,
@@ -173,7 +187,7 @@ hist_grupo2x = fazer_histograma(filtro_grupo2['dx'], -100, 100,
 #histograma com gaussiana grupo 2 dx
 histgaus_grupo2x = fazer_gaussiana(filtro_grupo2['dx'], -100, 100,
                                 'Histograma grupo2', 'dx', 'gaus_grupo2_dx.png')
-print('O valor de Ro a partir do ajuste da gaussiana para o grupo 2 é {0:.2f} kpc.'.format(histgaus_grupo2x))
+# print('O valor de Ro a partir do ajuste da gaussiana para o grupo 2 é {0:.2f} kpc.'.format(histgaus_grupo2x))
 
 1/(np.pi*2)**2
 
@@ -201,7 +215,7 @@ hist_grupo3x = fazer_histograma(filtro_grupo3['dx'], -30, 30,
 #histograma com gaussiana grupo 3 dx
 histgaus_grupo3x = fazer_gaussiana(filtro_grupo3['dx'], -30, 30,
                                 'Histograma grupo3', 'dx', 'gaus_grupo3_dx.png')
-print('O valor de Ro a partir do ajuste da gaussiana para o grupo 3 é {0:.2f} kpc.'.format(histgaus_grupo3x))
+# print('O valor de Ro a partir do ajuste da gaussiana para o grupo 3 é {0:.2f} kpc.'.format(histgaus_grupo3x))
 
 #histograma grupo 3 dy
 hist_grupo3y = fazer_histograma(filtro_grupo3['dy'], -30, 30,
