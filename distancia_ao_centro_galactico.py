@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-import math
+import math as math
 import matplotlib.pyplot as plt
 import os
 import statistics as estat
@@ -30,12 +30,12 @@ def leitura(nomearquivo):
   return df_test
 
 def fazer_grafico(x,y,titulo,nomeeixox,nomeeixoy,nome):
+  plt.figure()
   plt.scatter(x,y) #plotar o gráfico 
   plt.title (titulo) #título
   plt.xlabel(nomeeixox) #título do eixo x
   plt.ylabel(nomeeixoy) #título do eixo y
-  plt.savefig(os.path.join(graficos_path,'grafico_grupo',nome),format='png')
-  plt.show()
+  plt.savefig(os.path.join(graficos_path,nome),format='png')
 
 def fazer_histograma(eixox, min, max, titulo, nomeeixox, nomegrafico):
   plt.figure()
@@ -88,7 +88,7 @@ eixo_y_grupo1 = filtro_grupo1['[Fe/H]']
 
 grupo1 = fazer_grafico(eixo_x_grupo1, eixo_y_grupo1,
                        'módulo de B X metalicidade\n grupo 1', 'dz',
-                       'metalicidade [Fe/H]', 'grafico_grupo1.png')
+                       'metalicidade [Fe/H]',os.path.join('grafico_grupo','grafico_grupo1.png'))
 
 #fazer o gráfico
 
@@ -97,7 +97,7 @@ eixo_y_grupo2 = filtro_grupo2['[Fe/H]']
 
 grupo2 = fazer_grafico(eixo_x_grupo2, eixo_y_grupo2,
                        'módulo de B X metalicidade\n grupo 2', 'dz',
-                       'metalicidade [Fe/H]', 'grafico_grupo2.png')
+                       'metalicidade [Fe/H]',os.path.join('grafico_grupo','grafico_grupo2.png'))
 
 #fazer o gráfico
 
@@ -106,7 +106,7 @@ eixo_y_grupo3 = filtro_grupo3['[Fe/H]']
 
 grupo3 = fazer_grafico(eixo_x_grupo3, eixo_y_grupo3,
                        'módulo de B X metalicidade\n grupo3', 'dz',
-                       'metalicidade [Fe/H]', 'grafico_grupo3.png')
+                       'metalicidade [Fe/H]', os.path.join('grafico_grupo','grafico_grupo3.png'))
 
 #Aplicamos as equações 4, 5 e 6 do roteiro de atividades para determinar
 #o valor médio das componentes do vetor distância para o grupo 1.
@@ -189,8 +189,6 @@ histgaus_grupo2x = fazer_gaussiana(filtro_grupo2['dx'], -100, 100,
                                 'Histograma grupo2', 'dx', 'gaus_grupo2_dx.png')
 # print('O valor de Ro a partir do ajuste da gaussiana para o grupo 2 é {0:.2f} kpc.'.format(histgaus_grupo2x))
 
-1/(np.pi*2)**2
-
 #histograma grupo 2 dy
 hist_grupo2y = fazer_histograma(filtro_grupo2['dy'], -100, 100,
                                 'Histograma grupo2', 'dy', 'hist_grupo2_dy.png')
@@ -252,14 +250,14 @@ filtro_grupo3['R'] = distanciaCG(ro3, filtro_grupo3['R_Sun'],
 metalicidade_grupo1 = fazer_grafico(filtro_grupo1['R'], filtro_grupo1['[Fe/H]'],
                                     'Gráfico metalicidade x distância AGCG\ngrupo 1',
                                     'Metalicidade [Fe/H]', 'distância R',
-                                    'metalicidade/grafico_metalicidade_grupo1.png')
+                                    os.path.join('grafico_grupo','grafico_metalicidade_grupo1.png'))
 
 metalicidade_grupo2 = fazer_grafico(filtro_grupo2['R'], filtro_grupo2['[Fe/H]'],
                                     'Gráfico metalicidade x distância AGCG\ngrupo 2',
                                     'Metalicidade [Fe/H]', 'distância R',
-                                    'metalicidade/grafico_metalicidade_grupo2.png')
+                                    os.path.join('grafico_grupo','grafico_metalicidade_grupo2.png'))
 
 metalicidade_grupo3 = fazer_grafico(filtro_grupo3['R'], filtro_grupo3['[Fe/H]'],
                                     'Gráfico metalicidade x distância AGCG\ngrupo 3',
                                     'Metalicidade [Fe/H]', 'distância R',
-                                    'metalicidade/grafico_metalicidade_grupo3.png')
+                                    os.path.join('grafico_grupo','grafico_metalicidade_grupo3.png'))
